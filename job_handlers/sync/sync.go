@@ -32,10 +32,8 @@ func (jh *JobHandler) Confirm(f func(job.Job)) {
 }
 
 func (jh *JobHandler) internal() {
-	select {
-		f := <- jh.mutex_chan {
-			f()
-		}
+	for f := range jh.mutex_chan {
+		f()
 	}
 }
 
