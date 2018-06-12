@@ -1,11 +1,11 @@
-package sync_test
+package async_test
 
 import (
 	"fmt"
 	"testing"
 	"time"
 	"distributed-programming-abstractions/job_handlers"
-	jh "distributed-programming-abstractions/job_handlers/sync"
+	jh "distributed-programming-abstractions/job_handlers/async"
 )
 
 // Fulfill the properties.

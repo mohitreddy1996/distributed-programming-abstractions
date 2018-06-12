@@ -1,7 +1,7 @@
 package sync
 
 import (
-	"distributed-programming-abstractions"
+	"distributed-programming-abstractions/job_handlers"
 )
 
 type JobHandler struct {
