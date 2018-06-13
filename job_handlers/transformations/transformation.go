@@ -5,7 +5,7 @@ import (
 )
 
 type TransformationHandler struct {
-	job_handler job.Handler
+	job_handler job.Handler // Could be sync or async
 	buffer []job.Job
 	N int 
 	top int

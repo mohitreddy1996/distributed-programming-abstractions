@@ -51,3 +51,39 @@ func TestRunProcess(t *testing.T) {
 	}
 }
 
+func TestSoundness(t *testing.T) {
+	job_handler := sync.New()
+	transformation_handler := transformation.New(job_handler, 1)
+
+	process_channel := make(chan job.Job)
+	error_channel := make(chan job.Job)
+	wait_channel := make(chan job.Job)
+
+	transformation_handler.Process(func(j job.Job) {
+		process_channel <- j
+		fmt.Println("Processing job: ", j)
+		<-wait_channel
+	})
+
+	transformation_handler.Error(func(j job.Job) {
+		error_channel <- j
+	})
+
+	transformation_handler.Confirm(func(j job.Job) {})
+
+	transformation_handler.Submit("job1")
+	<-process_channel
+	transformation_handler.Submit("job2")
+	transformation_handler.Submit("job3")
+
+	select {
+		case j := <-error_channel:
+			content, ok := j.(string)
+			if !ok || content != "job3" {
+				t.Errorf("Error in the Submit(job.Job) code flow.")
+			}
+		case <-time.After(100 * time.Millisecond):
+			t.Errorf("Timeout in the desired operation.")
+	}
+	close(wait_channel)
+}
