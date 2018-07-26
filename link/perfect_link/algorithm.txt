@@ -1,0 +1,12 @@
+Perfect Peer-to-Peer links
+
+Events:
+Send | q, m : Requests to send message m to q.
+Deliver | p, m : Delivers message m sent by process p.
+
+Properties:
+1) Reliable delivery: If a correct process p sends a message m to a correct
+process q, then q eventually delivers m.
+2) No duplication: No message is delivered by a process more than once.
+3) No creation: If some process q delivers a message m with sender p, then m
+was previously sent to q by process p.

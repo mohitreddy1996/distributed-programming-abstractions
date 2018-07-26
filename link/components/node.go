@@ -9,6 +9,8 @@ import (
 	"net"
 )
 
+// Node represents a node in the network and responsible for communication with
+// peers.
 type Node struct {
 	peers    []link.Peer
 	isset    map[string]bool
@@ -17,8 +19,8 @@ type Node struct {
 	*Peer
 }
 
-// instantiate node with default options.
-var withDefault = func(n *Node) {
+// WithDefault instantiates node with default options.
+var WithDefault = func(n *Node) {
 	l, e := net.Listen("tcp", "129.1.1.1:0")
 	if e != nil {
 		log.Fatalf("net.Listen tcp :0: %v", e)
@@ -27,30 +29,30 @@ var withDefault = func(n *Node) {
 	n.addr = l.Addr()
 }
 
-// instantiate node with listener.
-func withListener(l net.Listener) func(*Node) {
+// WithListener instantiates node with listener.
+func WithListener(l net.Listener) func(*Node) {
 	return func(n *Node) {
 		n.listener = l
 		n.addr = l.Addr()
 	}
 }
 
-// instantiate node with given id.
-func withID(id string) func(*Node) {
+// WithID instantiates node with given id.
+func WithID(id string) func(*Node) {
 	return func(n *Node) { n.id = id }
 }
 
-// instantiate node with given address.
-func withAddr(addr net.Addr) func(*Node) {
+// WithAddr instantiates node with given address.
+func WithAddr(addr net.Addr) func(*Node) {
 	return func(n *Node) { n.addr = addr }
 }
 
-// instantiate node with peer.
-func withPeer(p link.Peer) func(*Node) {
+// WithPeer instantiates node with peer.
+func WithPeer(p link.Peer) func(*Node) {
 	return func(n *Node) { n.AddPeer(p) }
 }
 
-// instantiate a new node.
+// New instantiates a new node.
 func New(configs ...func(*Node)) *Node {
 	n := &Node{
 		isset: make(map[string]bool),
@@ -61,7 +63,7 @@ func New(configs ...func(*Node)) *Node {
 	for _, config := range configs {
 		config(n)
 	}
-
+	// set random uid.
 	if n.Id() == "" {
 		uid := make([]byte, 16)
 		io.ReadFull(rand.Reader, uid)
