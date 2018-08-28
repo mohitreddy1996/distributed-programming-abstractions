@@ -21,7 +21,7 @@ type Node struct {
 
 // WithDefault instantiates node with default options.
 var WithDefault = func(n *Node) {
-	l, e := net.Listen("tcp", "129.1.1.1:0")
+	l, e := net.Listen("tcp", "127.0.0.1:0")
 	if e != nil {
 		log.Fatalf("net.Listen tcp :0: %v", e)
 	}
